@@ -1,10 +1,10 @@
-# Mantis Free React Material UI Dashboard Template [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Download%20Mantis%20React%20-%20The%20professional%20Material%20designed%20React%20Admin%20Dashboard%20Template%20&url=https://mantisdashboard.io&via=codedthemes&hashtags=reactjs,webdev,developers,javascript)
+# Mantis React Material UI Dashboard Demo using Amplify Studio
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/codedthemes/mantis-free-react-admin-template/blob/main/LICENSE)
-[![GitHub package version](https://img.shields.io/github/package-json/v/codedthemes/mantis-free-react-admin-template)](https://github.com/codedthemes/mantis-free-react-admin-template/)
+[![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/devenkhatri/amplify-mantisdemo/blob/main/LICENSE)
+[![GitHub package version](https://img.shields.io/github/package-json/v/codedthemes/mantis-free-react-admin-template)](https://github.com/devenkhatri/amplify-mantisdemo/)
 
-Mantis is a free and open source React redux dashboard template made using the Material UI React component library with aim of flexibility and better customizability.
+Mantis is a React redux dashboard made using the Material UI React component library and AWS Amplify Studio with aim of flexibility and better customizability.
 
 ### Name Derived From Nature
 
@@ -12,55 +12,7 @@ Mantis Logo is inspired from the insect name - 'Mantises' as they have triangula
 
 Mantis has Ant Design principal on top of the MAterial UI React component library.
 
-:star: :star: :star: Support us by giving star (Top right of this page) if you like the theme :star: :star: :star:
-
 ![mantis-free-react-dashboard-template.jpg](https://mantisdashboard.io/adv-banner-images/og-social.png)
-
-The [Pro version](https://mantisdashboard.io) of Mantis react template includes features such as TypeScript, apps, authentication methods (i.e. JWT, Auth0, Firebase), advance components, form plugins, layouts, widgets, and more.
-
-| [Mantis Free](https://mantisdashboard.io/free) | [Mantis Pro](https://mantisdashboard.io)                          |
-| ---------------------------------------------- | :---------------------------------------------------------------- |
-| **9** Demo pages                               | **130+** Demo pages                                               |
-| -                                              | ✓ Multi-language                                                  |
-| -                                              | ✓ Dark/Light Mode 🌓                                              |
-| -                                              | ✓ TypeScript version                                              |
-| -                                              | ✓ Design files (Figma)                                            |
-| -                                              | ✓ Multiple color options                                          |
-| -                                              | ✓ RTL                                                             |
-| -                                              | ✓ JWT, Firebase, Auth0, AWS authentication                        |
-| -                                              | ✓ [More components](https://mantisdashboard.io/dashboard/default) |
-| ✓ MIT License                                  | ✓ [Pro License](https://mui.com/store/license/)                   |
-
-## Why Mantis?
-
-Mantis offers everything needed to build an advanced dashboard application. In the initial release, we included following high-end features,
-
--   Professional user interface.
--   Material UI React components.
--   Fully responsive, all modern browser supported.
--   Easy to use code structure
--   Flexible & high-Performance code
--   Simple documentation
-
-## Free Mantis React version
-
-#### Preview
-
--   [Demo](https://mantisdashboard.io/free)
-
-#### Download
-
--   [Download from GitHub](https://github.com/codedthemes/mantis-free-react-admin-template)
-
-## Mantis Pro version
-
-#### Preview
-
--   [Demo](https://mantisdashboard.io)
-
-#### Purchase
-
--   [Buy now](https://mui.com/store/items/mantis-react-admin-dashboard-template/)
 
 ## Table of contents
 
@@ -78,7 +30,7 @@ Mantis offers everything needed to build an advanced dashboard application. In t
 Clone from GitHub
 
 ```
-git clone https://github.com/codedthemes/mantis-free-react-admin-template.git
+git clone https://github.com/devenkhatri/amplify-mantisdemo.git
 yarn
 yarn start
 ```
@@ -104,7 +56,7 @@ Mantis is managed by team [CodedThemes](https://codedthemes.com).
 
 ## Issues
 
-Please generate a [GitHub issue](https://github.com/codedthemes/mantis-free-react-admin-template/issues) if you found a bug in any version. We are try our best to resolve the issue.
+Please generate a [GitHub issue](https://github.com/devenkhatri/amplify-mantisdemo/issues) if you found a bug in any version. We are try our best to resolve the issue.
 
 ## License
 
