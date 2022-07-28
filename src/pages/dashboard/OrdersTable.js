@@ -162,7 +162,7 @@ export default function OrderTable() {
     const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
 
     return (
-        <Box>
+        <Box style={{ border: `0.3rem dashed red` }}>
             <TableContainer
                 sx={{
                     width: '100%',

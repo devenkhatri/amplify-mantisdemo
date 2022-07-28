@@ -1,10 +1,25 @@
 // assets
-import { ChromeOutlined, QuestionOutlined } from '@ant-design/icons';
+import {
+    ChromeOutlined,
+    QuestionOutlined,
+    AppstoreAddOutlined,
+    AntDesignOutlined,
+    BarcodeOutlined,
+    BgColorsOutlined,
+    FontSizeOutlined,
+    LoadingOutlined
+} from '@ant-design/icons';
 
 // icons
 const icons = {
     ChromeOutlined,
-    QuestionOutlined
+    QuestionOutlined,
+    FontSizeOutlined,
+    BgColorsOutlined,
+    BarcodeOutlined,
+    AntDesignOutlined,
+    LoadingOutlined,
+    AppstoreAddOutlined
 };
 
 // ==============================|| MENU ITEMS - SAMPLE PAGE & DOCUMENTATION ||============================== //
@@ -22,14 +37,43 @@ const support = {
             icon: icons.ChromeOutlined
         },
         {
-            id: 'documentation',
-            title: 'Documentation',
+            id: 'util-typography',
+            title: 'Typography',
             type: 'item',
-            url: 'https://codedthemes.gitbook.io/mantis-react/',
-            icon: icons.QuestionOutlined,
-            external: true,
-            target: true
+            url: '/typography',
+            icon: icons.FontSizeOutlined
+        },
+        {
+            id: 'util-color',
+            title: 'Color',
+            type: 'item',
+            url: '/color',
+            icon: icons.BgColorsOutlined
+        },
+        {
+            id: 'util-shadow',
+            title: 'Shadow',
+            type: 'item',
+            url: '/shadow',
+            icon: icons.BarcodeOutlined
+        },
+        {
+            id: 'ant-icons',
+            title: 'Ant Icons',
+            type: 'item',
+            url: '/icons/ant',
+            icon: icons.AntDesignOutlined,
+            breadcrumbs: false
         }
+        // ,{
+        //     id: 'documentation',
+        //     title: 'Documentation',
+        //     type: 'item',
+        //     url: 'https://codedthemes.gitbook.io/mantis-react/',
+        //     icon: icons.QuestionOutlined,
+        //     external: true,
+        //     target: true
+        // }
     ]
 };
 

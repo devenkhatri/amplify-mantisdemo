@@ -15,10 +15,10 @@ const AuthFooter = () => {
                 textAlign={matchDownSM ? 'center' : 'inherit'}
             >
                 <Typography variant="subtitle2" color="secondary" component="span">
-                    &copy; Mantis React Dashboard Template By&nbsp;
-                    <Typography component={Link} variant="subtitle2" href="https://codedthemes.com" target="_blank" underline="hover">
+                    &copy; Mantis &nbsp;
+                    {/* <Typography component={Link} variant="subtitle2" href="https://codedthemes.com" target="_blank" underline="hover">
                         CodedThemes
-                    </Typography>
+                    </Typography> */}
                 </Typography>
 
                 <Stack
@@ -26,7 +26,7 @@ const AuthFooter = () => {
                     spacing={matchDownSM ? 1 : 3}
                     textAlign={matchDownSM ? 'center' : 'inherit'}
                 >
-                    <Typography
+                    {/* <Typography
                         variant="subtitle2"
                         color="secondary"
                         component={Link}
@@ -35,12 +35,12 @@ const AuthFooter = () => {
                         underline="hover"
                     >
                         MUI Templates
-                    </Typography>
+                    </Typography> */}
                     <Typography
                         variant="subtitle2"
                         color="secondary"
                         component={Link}
-                        href="https://codedthemes.com"
+                        href="https://www.incrementors.com/tools/dummy-content-generator/"
                         target="_blank"
                         underline="hover"
                     >
@@ -50,7 +50,7 @@ const AuthFooter = () => {
                         variant="subtitle2"
                         color="secondary"
                         component={Link}
-                        href="https://codedthemes.support-hub.io/"
+                        href="https://www.incrementors.com/tools/dummy-content-generator/"
                         target="_blank"
                         underline="hover"
                     >
