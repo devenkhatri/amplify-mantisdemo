@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 // material-ui
@@ -11,22 +11,46 @@ import NumberFormat from 'react-number-format';
 // project import
 import Dot from 'components/@extended/Dot';
 
+//AWS imports
+import { Amplify, API, graphqlOperation } from 'aws-amplify';
+import { listOrders } from '../../graphql/queries';
+
+import awsExports from '../../aws-exports';
+Amplify.configure(awsExports);
+
+async function fetchOrders() {
+    try {
+        const orderData = await API.graphql(graphqlOperation(listOrders));
+        const orders = orderData.data.listOrders.items;
+        console.log('***** orders ', orders);
+        return orders;
+        //   setTodos(todos)
+    } catch (err) {
+        console.log('error fetching todos');
+    }
+}
+
 function createData(trackingNo, name, fat, carbs, protein) {
+    if (carbs == 'APPROVED') carbs = 1;
+    else if (carbs == 'PENDING') carbs = 0;
+    else if (carbs == 'REJECTED') carbs = 2;
     return { trackingNo, name, fat, carbs, protein };
 }
 
-const rows = [
-    createData(84564564, 'Camera Lens', 40, 2, 40570),
-    createData(98764564, 'Laptop', 300, 0, 180139),
-    createData(98756325, 'Mobile', 355, 1, 90989),
-    createData(98652366, 'Handset', 50, 1, 10239),
-    createData(13286564, 'Computer Accessories', 100, 1, 83348),
-    createData(86739658, 'TV', 99, 0, 410780),
-    createData(13256498, 'Keyboard', 125, 2, 70999),
-    createData(98753263, 'Mouse', 89, 2, 10570),
-    createData(98753275, 'Desktop', 185, 1, 98063),
-    createData(98753291, 'Chair', 100, 0, 14001)
-];
+// 1 - Approved, 0 - Pending, 2 - Rejected
+
+// const rows1 = [
+//     createData(84564564, 'Camera Lens', 40, 2, 40570),
+//     createData(98764564, 'Laptop', 300, 0, 180139),
+//     createData(98756325, 'Mobile', 355, 1, 90989),
+//     createData(98652366, 'Handset', 50, 1, 10239),
+//     createData(13286564, 'Computer Accessories', 100, 1, 83348),
+//     createData(86739658, 'TV', 99, 0, 410780),
+//     createData(13256498, 'Keyboard', 125, 2, 70999),
+//     createData(98753263, 'Mouse', 89, 2, 10570),
+//     createData(98753275, 'Desktop', 185, 1, 98063),
+//     createData(98753291, 'Chair', 100, 0, 14001)
+// ];
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -160,6 +184,23 @@ export default function OrderTable() {
     const [selected] = useState([]);
 
     const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
+
+    const [rows, setRows] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            const orders = [];
+            const orderData = await fetchOrders();
+            console.log('**** orderData', orderData);
+            orderData &&
+                orderData.map((order) => {
+                    const processedOrder = createData(order.TrackingNo, order.ProductName, order.Quantity, order.Status, order.TotalAmount);
+                    orders.push(processedOrder);
+                });
+            setRows(orders);
+        }
+        fetchData();
+    }, []);
 
     return (
         <Box style={{ border: `0.3rem dashed red` }}>

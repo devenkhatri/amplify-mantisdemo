@@ -15,6 +15,11 @@ import 'assets/third-party/apex-chart.css';
 import App from './App';
 import { store } from 'store';
 
+//Amplify Setup
+import { Amplify } from 'aws-amplify';
+import awsExports from './aws-exports';
+Amplify.configure(awsExports);
+
 // ==============================|| MAIN - REACT DOM RENDER  ||============================== //
 
 ReactDOM.render(
