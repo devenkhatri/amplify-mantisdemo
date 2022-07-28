@@ -16,6 +16,7 @@ import { Amplify, API, graphqlOperation } from 'aws-amplify';
 import { listOrders } from '../../graphql/queries';
 
 import awsExports from '../../aws-exports';
+import { CircularProgress, Grid } from '../../../node_modules/@mui/material/index';
 Amplify.configure(awsExports);
 
 async function fetchOrders() {
@@ -204,6 +205,9 @@ export default function OrderTable() {
 
     return (
         <Box style={{ border: `0.3rem dashed red` }}>
+            <Grid container direction="row" justifyContent="center" alignItems="center">
+                {rows && rows.length <= 0 && <CircularProgress />}
+            </Grid>
             <TableContainer
                 sx={{
                     width: '100%',
