@@ -13,10 +13,12 @@ import Dot from 'components/@extended/Dot';
 
 //AWS imports
 import { Amplify, API, graphqlOperation } from 'aws-amplify';
+import * as subscriptions from '../../graphql/subscriptions';
 import { listOrders } from '../../graphql/queries';
 
 import awsExports from '../../aws-exports';
 import { CircularProgress, Grid } from '../../../node_modules/@mui/material/index';
+
 Amplify.configure(awsExports);
 
 async function fetchOrders() {
@@ -25,9 +27,8 @@ async function fetchOrders() {
         const orders = orderData.data.listOrders.items;
         console.log('***** orders ', orders);
         return orders;
-        //   setTodos(todos)
     } catch (err) {
-        console.log('error fetching todos');
+        console.log('error fetching orders', err);
     }
 }
 
@@ -37,6 +38,23 @@ function createData(trackingNo, name, fat, carbs, protein) {
     else if (carbs == 'REJECTED') carbs = 2;
     return { trackingNo, name, fat, carbs, protein };
 }
+
+// Subscribe to updation of Orders
+// const subscription = API.graphql(graphqlOperation(subscriptions.onUpdateOrders)).subscribe({
+//     next: ({ provider, value }) => console.log({ provider, value }),
+//     error: (error) => console.warn(error)
+// });
+
+// // Stop receiving data updates from the subscription
+// subscription.unsubscribe();
+
+// Hub.listen('api', (data) => {
+//     const { payload } = data;
+//     if (payload.event === CONNECTION_STATE_CHANGE) {
+//         const connectionState = payload.data.connectionState;
+//         console.log(connectionState);
+//     }
+// });
 
 // 1 - Approved, 0 - Pending, 2 - Rejected
 
@@ -200,7 +218,20 @@ export default function OrderTable() {
                 });
             setRows(orders);
         }
-        fetchData();
+        // Subscribe to updation of Orders
+        const subscription = API.graphql(graphqlOperation(subscriptions.onUpdateOrders)).subscribe({
+            // next: ({ provider, value }) => console.log({ provider, value }),
+            next: ({ provider, value }) => {
+                console.log({ provider, value });
+                fetchData();
+            },
+            error: (error) => console.warn(error)
+        });
+
+        // Stop receiving data updates from the subscription
+        subscription.unsubscribe();
+
+        // fetchData();
     }, []);
 
     return (
