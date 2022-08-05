@@ -231,7 +231,7 @@ export default function OrderTable() {
         // Stop receiving data updates from the subscription
         subscription.unsubscribe();
 
-        // fetchData();
+        fetchData();
     }, []);
 
     return (
