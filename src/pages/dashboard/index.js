@@ -98,6 +98,38 @@ const DashboardDefault = () => {
             <Grid item xs={12} md={7} lg={8}>
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
+                        <Typography variant="h5">Recent Orders</Typography>
+                    </Grid>
+                    <Grid item />
+                </Grid>
+                <MainCard sx={{ mt: 2 }} content={false}>
+                    <OrdersTable />
+                </MainCard>
+            </Grid>
+            <Grid item xs={12} md={5} lg={4}>
+                <Grid container alignItems="center" justifyContent="space-between">
+                    <Grid item>
+                        <Typography variant="h5">Income Overview</Typography>
+                    </Grid>
+                    <Grid item />
+                </Grid>
+                <MainCard sx={{ mt: 2 }} content={false}>
+                    <Box sx={{ p: 3, pb: 0 }}>
+                        <Stack spacing={2}>
+                            <Typography variant="h6" color="textSecondary">
+                                This Week Statistics
+                            </Typography>
+                            <Typography variant="h3">$7,650</Typography>
+                        </Stack>
+                    </Box>
+                    <MonthlyBarChart />
+                </MainCard>
+            </Grid>
+
+            {/* row 3 */}
+            <Grid item xs={12} md={7} lg={8}>
+                <Grid container alignItems="center" justifyContent="space-between">
+                    <Grid item>
                         <Typography variant="h5">Unique Visitor</Typography>
                     </Grid>
                     <Grid item>
@@ -125,38 +157,6 @@ const DashboardDefault = () => {
                     <Box sx={{ pt: 1, pr: 2 }}>
                         <IncomeAreaChart slot={slot} />
                     </Box>
-                </MainCard>
-            </Grid>
-            <Grid item xs={12} md={5} lg={4}>
-                <Grid container alignItems="center" justifyContent="space-between">
-                    <Grid item>
-                        <Typography variant="h5">Income Overview</Typography>
-                    </Grid>
-                    <Grid item />
-                </Grid>
-                <MainCard sx={{ mt: 2 }} content={false}>
-                    <Box sx={{ p: 3, pb: 0 }}>
-                        <Stack spacing={2}>
-                            <Typography variant="h6" color="textSecondary">
-                                This Week Statistics
-                            </Typography>
-                            <Typography variant="h3">$7,650</Typography>
-                        </Stack>
-                    </Box>
-                    <MonthlyBarChart />
-                </MainCard>
-            </Grid>
-
-            {/* row 3 */}
-            <Grid item xs={12} md={7} lg={8}>
-                <Grid container alignItems="center" justifyContent="space-between">
-                    <Grid item>
-                        <Typography variant="h5">Recent Orders</Typography>
-                    </Grid>
-                    <Grid item />
-                </Grid>
-                <MainCard sx={{ mt: 2 }} content={false}>
-                    <OrdersTable />
                 </MainCard>
             </Grid>
             <Grid item xs={12} md={5} lg={4}>

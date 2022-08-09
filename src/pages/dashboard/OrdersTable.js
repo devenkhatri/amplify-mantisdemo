@@ -14,11 +14,11 @@ import {
     TableHead,
     TableRow,
     Typography,
-    Fab,
+    Button,
     CircularProgress,
     Grid
 } from '@mui/material';
-import { UnorderedListOutlined } from '@ant-design/icons';
+import { DiffFilled } from '@ant-design/icons';
 
 // third-party
 import NumberFormat from 'react-number-format';
@@ -126,7 +126,7 @@ const headCells = [
         id: 'name',
         align: 'left',
         disablePadding: true,
-        label: 'Product Name'
+        label: 'Name'
     },
     {
         id: 'fat',
@@ -138,7 +138,6 @@ const headCells = [
         id: 'carbs',
         align: 'left',
         disablePadding: false,
-
         label: 'Status'
     },
     {
@@ -229,8 +228,10 @@ export default function OrderTable() {
         console.log('**** orderData', orderData);
         orderData &&
             orderData.map((order) => {
-                const processedOrder = createData(order.TrackingNo, order.ProductName, order.Quantity, order.Status, order.TotalAmount);
-                orders.push(processedOrder);
+                if (!order._deleted) {
+                    const processedOrder = createData(order.TrackingNo, order.ProductName, order.Quantity, order.Status, order.TotalAmount);
+                    orders.push(processedOrder);
+                }
             });
         setRows(orders);
         setLoading(false);
@@ -310,10 +311,10 @@ export default function OrderTable() {
 
     return (
         <div>
-            <Grid container direction="row">
-                <Fab color="primary" onClick={() => createDummyOrders(2)}>
-                    <UnorderedListOutlined />
-                </Fab>
+            <Grid container direction="row" padding="0.5rem">
+                <Button variant="contained" color="primary" startIcon={<DiffFilled />} onClick={() => createDummyOrders(2)}>
+                    Create Dummy Orders
+                </Button>
                 {loading && <CircularProgress />}
             </Grid>
             <Box style={{ border: `0.3rem dashed red` }}>
