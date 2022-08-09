@@ -3,7 +3,23 @@ import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 // material-ui
-import { Box, Link, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import {
+    Box,
+    Link,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+    Button,
+    Fab,
+    CircularProgress,
+    Grid
+} from '@mui/material';
+import { UnorderedListOutlined } from '@ant-design/icons';
 
 // third-party
 import NumberFormat from 'react-number-format';
@@ -15,9 +31,10 @@ import Dot from 'components/@extended/Dot';
 import { Amplify, API, graphqlOperation } from 'aws-amplify';
 import * as subscriptions from '../../graphql/subscriptions';
 import { listOrders } from '../../graphql/queries';
+import { DataStore } from '@aws-amplify/datastore';
+import { Orders } from '../../models';
 
 import awsExports from '../../aws-exports';
-import { CircularProgress, Grid } from '../../../node_modules/@mui/material/index';
 
 Amplify.configure(awsExports);
 
@@ -205,96 +222,150 @@ export default function OrderTable() {
     const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
 
     const [rows, setRows] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    async function fetchData() {
+        const orders = [];
+        const orderData = await fetchOrders();
+        console.log('**** orderData', orderData);
+        orderData &&
+            orderData.map((order) => {
+                const processedOrder = createData(order.TrackingNo, order.ProductName, order.Quantity, order.Status, order.TotalAmount);
+                orders.push(processedOrder);
+            });
+        setRows(orders);
+        setLoading(false);
+    }
 
     useEffect(() => {
-        async function fetchData() {
-            const orders = [];
-            const orderData = await fetchOrders();
-            console.log('**** orderData', orderData);
-            orderData &&
-                orderData.map((order) => {
-                    const processedOrder = createData(order.TrackingNo, order.ProductName, order.Quantity, order.Status, order.TotalAmount);
-                    orders.push(processedOrder);
-                });
-            setRows(orders);
-        }
         // Subscribe to updation of Orders
-        const subscription = API.graphql(graphqlOperation(subscriptions.onUpdateOrders)).subscribe({
+        const subscription = API.graphql(graphqlOperation(subscriptions.onCreateOrders)).subscribe({
             // next: ({ provider, value }) => console.log({ provider, value }),
             next: ({ provider, value }) => {
-                console.log({ provider, value });
+                console.log('********* subscription oncreate', provider, value);
                 fetchData();
             },
             error: (error) => console.warn(error)
         });
-
-        // Stop receiving data updates from the subscription
         subscription.unsubscribe();
+
+        // Subscribe to updation of Orders
+        const subscriptionUpdate = API.graphql(graphqlOperation(subscriptions.onUpdateOrders)).subscribe({
+            next: ({ provider, value }) => {
+                console.log('********* subscription onUPDATE', provider, value);
+                fetchData();
+            },
+            error: (error) => console.warn(error)
+        });
+        subscriptionUpdate.unsubscribe();
 
         fetchData();
     }, []);
 
+    async function createDummyOrders(count) {
+        if (!count) count = 2;
+        const { uniqueNamesGenerator, NumberDictionary, names } = require('unique-names-generator');
+        for (var i = 0; i < count; i++) {
+            //trackingno
+            const randomTrackingno = NumberDictionary.generate({ length: 10 });
+            //name
+            const randomName = uniqueNamesGenerator({
+                dictionaries: [names, names],
+                style: 'capital',
+                separator: ' '
+            });
+            //quantity
+            const randomQuantity = NumberDictionary.generate({ max: 999 });
+            //status
+            const allStatus = ['APPROVED', 'REJECTED', 'PENDING'];
+            const randomStatus = uniqueNamesGenerator({
+                dictionaries: [allStatus]
+            });
+            //amount
+            const randomAmount = NumberDictionary.generate({ max: 9999 });
+            const newOrder = {
+                TrackingNo: '' + randomTrackingno,
+                ProductName: randomName,
+                Quantity: parseInt(randomQuantity[0]),
+                Status: randomStatus,
+                TotalAmount: parseInt(randomAmount[0])
+            };
+
+            console.log('Random Order: ', newOrder);
+
+            await DataStore.save(new Orders(newOrder));
+            await fetchData();
+
+            console.log('Order created successfully......');
+        }
+    }
+
     return (
-        <Box style={{ border: `0.3rem dashed red` }}>
-            <Grid container direction="row" justifyContent="center" alignItems="center">
-                {rows && rows.length <= 0 && <CircularProgress />}
-            </Grid>
-            <TableContainer
-                sx={{
-                    width: '100%',
-                    overflowX: 'auto',
-                    position: 'relative',
-                    display: 'block',
-                    maxWidth: '100%',
-                    '& td, & th': { whiteSpace: 'nowrap' }
-                }}
-            >
-                <Table
-                    aria-labelledby="tableTitle"
+        <div>
+            <Fab color="primary" onClick={() => createDummyOrders(2)}>
+                <UnorderedListOutlined />
+            </Fab>
+            <Box style={{ border: `0.3rem dashed red` }}>
+                <TableContainer
                     sx={{
-                        '& .MuiTableCell-root:first-child': {
-                            pl: 2
-                        },
-                        '& .MuiTableCell-root:last-child': {
-                            pr: 3
-                        }
+                        width: '100%',
+                        overflowX: 'auto',
+                        position: 'relative',
+                        display: 'block',
+                        maxWidth: '100%',
+                        '& td, & th': { whiteSpace: 'nowrap' }
                     }}
                 >
-                    <OrderTableHead order={order} orderBy={orderBy} />
-                    <TableBody>
-                        {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
-                            const isItemSelected = isSelected(row.trackingNo);
-                            const labelId = `enhanced-table-checkbox-${index}`;
+                    <Table
+                        aria-labelledby="tableTitle"
+                        sx={{
+                            '& .MuiTableCell-root:first-child': {
+                                pl: 2
+                            },
+                            '& .MuiTableCell-root:last-child': {
+                                pr: 3
+                            }
+                        }}
+                    >
+                        <OrderTableHead order={order} orderBy={orderBy} />
+                        <TableBody>
+                            {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+                                const isItemSelected = isSelected(row.trackingNo);
+                                const labelId = `enhanced-table-checkbox-${index}`;
 
-                            return (
-                                <TableRow
-                                    hover
-                                    role="checkbox"
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    aria-checked={isItemSelected}
-                                    tabIndex={-1}
-                                    key={row.trackingNo}
-                                    selected={isItemSelected}
-                                >
-                                    <TableCell component="th" id={labelId} scope="row" align="left">
-                                        <Link color="secondary" component={RouterLink} to="">
-                                            {row.trackingNo}
-                                        </Link>
-                                    </TableCell>
-                                    <TableCell align="left">{row.name}</TableCell>
-                                    <TableCell align="right">{row.fat}</TableCell>
-                                    <TableCell align="left">
-                                        <OrderStatus status={row.carbs} />
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <NumberFormat value={row.protein} displayType="text" thousandSeparator prefix="$" />
-                                    </TableCell>
-                                </TableRow>
-                            );
-                        })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Box>
+                                return (
+                                    <TableRow
+                                        hover
+                                        role="checkbox"
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        aria-checked={isItemSelected}
+                                        tabIndex={-1}
+                                        key={row.trackingNo}
+                                        selected={isItemSelected}
+                                    >
+                                        <TableCell component="th" id={labelId} scope="row" align="left">
+                                            <Link color="secondary" component={RouterLink} to="">
+                                                {row.trackingNo}
+                                            </Link>
+                                        </TableCell>
+                                        <TableCell align="left">{row.name}</TableCell>
+                                        <TableCell align="right">{row.fat}</TableCell>
+                                        <TableCell align="left">
+                                            <OrderStatus status={row.carbs} />
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <NumberFormat value={row.protein} displayType="text" thousandSeparator prefix="$" />
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <Grid container direction="row" justifyContent="center" alignItems="center">
+                    {loading && <CircularProgress />}
+                </Grid>
+            </Box>
+        </div>
     );
 }
