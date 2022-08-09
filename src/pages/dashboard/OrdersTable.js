@@ -14,7 +14,6 @@ import {
     TableHead,
     TableRow,
     Typography,
-    Button,
     Fab,
     CircularProgress,
     Grid
@@ -265,6 +264,8 @@ export default function OrderTable() {
     async function createDummyOrders(count) {
         if (!count) count = 2;
         const { uniqueNamesGenerator, NumberDictionary, names } = require('unique-names-generator');
+        setLoading(true);
+        const orders = rows;
         for (var i = 0; i < count; i++) {
             //trackingno
             const randomTrackingno = NumberDictionary.generate({ length: 10 });
@@ -292,19 +293,29 @@ export default function OrderTable() {
             };
 
             console.log('Random Order: ', newOrder);
-
             await DataStore.save(new Orders(newOrder));
-            await fetchData();
-
+            const processedOrder = createData(
+                newOrder.TrackingNo,
+                newOrder.ProductName,
+                newOrder.Quantity,
+                newOrder.Status,
+                newOrder.TotalAmount
+            );
+            orders.push(processedOrder);
             console.log('Order created successfully......');
         }
+        setRows(orders);
+        setLoading(false);
     }
 
     return (
         <div>
-            <Fab color="primary" onClick={() => createDummyOrders(2)}>
-                <UnorderedListOutlined />
-            </Fab>
+            <Grid container direction="row">
+                <Fab color="primary" onClick={() => createDummyOrders(2)}>
+                    <UnorderedListOutlined />
+                </Fab>
+                {loading && <CircularProgress />}
+            </Grid>
             <Box style={{ border: `0.3rem dashed red` }}>
                 <TableContainer
                     sx={{
@@ -362,9 +373,6 @@ export default function OrderTable() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Grid container direction="row" justifyContent="center" alignItems="center">
-                    {loading && <CircularProgress />}
-                </Grid>
             </Box>
         </div>
     );
