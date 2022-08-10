@@ -27,7 +27,7 @@ import NumberFormat from 'react-number-format';
 import Dot from 'components/@extended/Dot';
 
 //AWS imports
-import { Amplify, API, graphqlOperation } from 'aws-amplify';
+import { Amplify, API, graphqlOperation, Analytics } from 'aws-amplify';
 import * as subscriptions from '../../graphql/subscriptions';
 import { listOrders } from '../../graphql/queries';
 import { DataStore } from '@aws-amplify/datastore';
@@ -237,7 +237,28 @@ export default function OrderTable() {
         setLoading(false);
     }
 
+    function performAnalytics() {
+        //Session Tracking
+        Analytics.autoTrack('session', {
+            // REQUIRED, turn on/off the auto tracking
+            enable: true
+        });
+        //Page View Tracking
+        Analytics.autoTrack('pageView', {
+            // REQUIRED, turn on/off the auto tracking
+            enable: true,
+            eventName: 'pageView'
+            // OPTIONAL, to get the current page url
+            // getUrl: () => {
+            //     return window.location.origin + window.location.pathname;
+            // }
+        });
+        //Custom Event Tracking
+        Analytics.record({ name: 'dashboardVisit' });
+    }
+
     useEffect(() => {
+        performAnalytics();
         fetchData();
         // Subscribe to creation of Orders
         const subscriptionCreate = API.graphql(graphqlOperation(subscriptions.onCreateOrders)).subscribe({

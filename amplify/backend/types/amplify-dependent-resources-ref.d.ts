@@ -7,7 +7,7 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "auth": {
-        "amplifiedtodo908f7bd6": {
+        "amplifiedtodo": {
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
             "UserPoolId": "string",
@@ -15,6 +15,13 @@ export type AmplifyDependentResourcesAttributes = {
             "UserPoolName": "string",
             "AppClientIDWeb": "string",
             "AppClientID": "string"
+        }
+    },
+    "analytics": {
+        "amplifiedtodo": {
+            "Region": "string",
+            "Id": "string",
+            "appName": "string"
         }
     }
 }
