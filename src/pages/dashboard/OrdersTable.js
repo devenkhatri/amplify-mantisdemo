@@ -238,28 +238,27 @@ export default function OrderTable() {
     }
 
     useEffect(() => {
-        // Subscribe to updation of Orders
-        const subscription = API.graphql(graphqlOperation(subscriptions.onCreateOrders)).subscribe({
-            // next: ({ provider, value }) => console.log({ provider, value }),
+        fetchData();
+        // Subscribe to creation of Orders
+        const subscriptionCreate = API.graphql(graphqlOperation(subscriptions.onCreateOrders)).subscribe({
             next: ({ provider, value }) => {
-                console.log('********* subscription oncreate', provider, value);
+                console.log('********* subscription onCREATE', provider, value);
                 fetchData();
             },
-            error: (error) => console.warn(error)
+            error: (error) => console.error('********* create subscription error', error)
         });
-        subscription.unsubscribe();
-
         // Subscribe to updation of Orders
         const subscriptionUpdate = API.graphql(graphqlOperation(subscriptions.onUpdateOrders)).subscribe({
             next: ({ provider, value }) => {
                 console.log('********* subscription onUPDATE', provider, value);
                 fetchData();
             },
-            error: (error) => console.warn(error)
+            error: (error) => console.error('********* updatedsubscription error', error)
         });
-        subscriptionUpdate.unsubscribe();
-
-        fetchData();
+        return () => {
+            subscriptionCreate.unsubscribe();
+            subscriptionUpdate.unsubscribe();
+        };
     }, []);
 
     async function createDummyOrders(count) {
