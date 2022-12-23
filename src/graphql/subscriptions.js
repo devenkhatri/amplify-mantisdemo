@@ -2,8 +2,8 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateOrders = /* GraphQL */ `
-  subscription OnCreateOrders {
-    onCreateOrders {
+  subscription OnCreateOrders($filter: ModelSubscriptionOrdersFilterInput) {
+    onCreateOrders(filter: $filter) {
       id
       TrackingNo
       ProductName
@@ -19,8 +19,8 @@ export const onCreateOrders = /* GraphQL */ `
   }
 `;
 export const onUpdateOrders = /* GraphQL */ `
-  subscription OnUpdateOrders {
-    onUpdateOrders {
+  subscription OnUpdateOrders($filter: ModelSubscriptionOrdersFilterInput) {
+    onUpdateOrders(filter: $filter) {
       id
       TrackingNo
       ProductName
@@ -36,8 +36,8 @@ export const onUpdateOrders = /* GraphQL */ `
   }
 `;
 export const onDeleteOrders = /* GraphQL */ `
-  subscription OnDeleteOrders {
-    onDeleteOrders {
+  subscription OnDeleteOrders($filter: ModelSubscriptionOrdersFilterInput) {
+    onDeleteOrders(filter: $filter) {
       id
       TrackingNo
       ProductName
